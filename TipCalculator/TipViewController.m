@@ -42,7 +42,7 @@
     [super viewDidLoad];
   
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Settings" style:UIBarButtonItemStylePlain target:self action:@selector(onSettingsButton)];
-    NSLog(@"I am in View Did load");
+   
     
    
 }
@@ -51,14 +51,8 @@
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     int intValue = [defaults integerForKey:@"default_tip"];
-    NSLog(@"This is the int value:%d", intValue);
-    NSLog(@"Saved value:%d", intValue);
-    //if(intValue!=0){
-        //select the segment
-        [self.tipControl setSelectedSegmentIndex:intValue];
-        NSLog(@"I am in the main page:%d", intValue);
-   // }
-    
+ 
+    [self.tipControl setSelectedSegmentIndex:intValue];
     
     [self updateValues];
 }
@@ -66,7 +60,7 @@
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    
 }
 
 - (IBAction)splitSlidder:(id)sender {
@@ -92,7 +86,7 @@
     NSArray *tipValue = @[@(0.1), @(0.15), @(0.2)];
    
     float billAfterSplit = (billAmount/splitBy);
-    NSLog(@"BillAfterSplit:%0.2f",billAfterSplit);
+
     
     float tipAmount = billAfterSplit * [tipValue[self.tipControl.selectedSegmentIndex] floatValue];
     float totalAmount = billAfterSplit+tipAmount;
