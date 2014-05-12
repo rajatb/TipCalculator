@@ -14,6 +14,10 @@
 @property (weak, nonatomic) IBOutlet UILabel *tipLabel;
 @property (weak, nonatomic) IBOutlet UILabel *tipTotal;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *tipControl;
+- (IBAction)splitSlidder:(id)sender;
+@property (weak, nonatomic) IBOutlet UISlider *sliderValue;
+@property (weak, nonatomic) IBOutlet UILabel *splitLabel;
+@property (weak, nonatomic) IBOutlet UILabel *billAfterSplitLabel;
 
 - (IBAction)onTap:(id)sender;
 - (void)updateValues;
@@ -65,6 +69,15 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (IBAction)splitSlidder:(id)sender {
+    int sliderValue;
+    sliderValue = lroundf(self.sliderValue.value);
+    [self.sliderValue setValue:sliderValue animated:YES];
+    
+    [self updateValues];
+    
+}
+
 - (IBAction)onTap:(id)sender {
     [self.view endEditing:YES];
     [self updateValues];
@@ -74,13 +87,20 @@
 -(void)updateValues
 {
     float billAmount = [self.billTextField.text floatValue];
+    float splitBy= self.sliderValue.value;
     
-    NSArray *tipValue = @[@(0.1), @(0.15), @(2.0)];
-    float tipAmount = billAmount* [tipValue[self.tipControl.selectedSegmentIndex] floatValue];
-    float totalAmount = billAmount+tipAmount;
+    NSArray *tipValue = @[@(0.1), @(0.15), @(0.2)];
+   
+    float billAfterSplit = (billAmount/splitBy);
+    NSLog(@"BillAfterSplit:%0.2f",billAfterSplit);
+    
+    float tipAmount = billAfterSplit * [tipValue[self.tipControl.selectedSegmentIndex] floatValue];
+    float totalAmount = billAfterSplit+tipAmount;
     
     self.tipLabel.text = [NSString stringWithFormat:@"$%0.2f", tipAmount];
     self.tipTotal.text = [NSString stringWithFormat:@"$%0.2f", totalAmount];
+    self.splitLabel.text = [NSString stringWithFormat:@"%0.0f", self.sliderValue.value];
+    self.billAfterSplitLabel.text = [NSString stringWithFormat:@"$%0.2f",billAfterSplit];
 }
 
 - (void) onSettingsButton {
